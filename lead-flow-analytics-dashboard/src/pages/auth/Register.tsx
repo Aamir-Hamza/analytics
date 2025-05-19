@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { Eye, EyeOff, Lock, Mail, User } from "lucide-react";
 import Logo from "@/components/Logo";
+import { getApiUrl } from '@/lib/api';
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -28,7 +29,7 @@ const Register = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch("/api/auth/register", {
+      const response = await fetch(getApiUrl("/api/auth/register"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

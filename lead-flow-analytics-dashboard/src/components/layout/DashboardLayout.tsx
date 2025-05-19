@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import Logo from "@/components/Logo";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { getApiUrl } from '@/lib/api';
 
 const sidebarItems = [
   { name: "Dashboard", path: "/dashboard", icon: <LayoutDashboard className="h-5 w-5" /> },
@@ -40,7 +41,7 @@ const DashboardLayout = () => {
       const token = localStorage.getItem("auth-token");
       if (!token) return;
       try {
-        const res = await fetch("/api/auth/profile", {
+        const res = await fetch(getApiUrl("/api/auth/profile"), {
           headers: {
             Authorization: `Bearer ${token}`,
           },

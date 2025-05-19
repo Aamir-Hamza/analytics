@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { Eye, EyeOff, Lock, Mail } from "lucide-react";
 import Logo from "@/components/Logo";
+import { getApiUrl } from '@/lib/api';
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -32,7 +33,7 @@ const Login = () => {
 
       // Real API integration
       try {
-        const response = await fetch("/api/auth/login", {
+        const response = await fetch(getApiUrl("/api/auth/login"), {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

@@ -33,6 +33,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { MoreHorizontal, Plus } from "lucide-react";
 import { toast } from "sonner";
+import { getApiUrl } from '@/lib/api';
 
 interface Lead {
   _id: string;
@@ -73,7 +74,7 @@ const Leads = () => {
     setError("");
     try {
       const token = localStorage.getItem("auth-token");
-      const res = await fetch("/api/leads", {
+      const res = await fetch(getApiUrl("/api/leads"), {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -96,7 +97,7 @@ const Leads = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem("auth-token");
-      const res = await fetch("/api/leads", {
+      const res = await fetch(getApiUrl("/api/leads"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -106,7 +107,7 @@ const Leads = () => {
       });
       if (!res.ok) throw new Error("Failed to add lead");
       toast.success("Lead added successfully!");
-      setIsAddDialogOpen(false);
+    setIsAddDialogOpen(false);
       setNewLead({ name: "", email: "", phone: "", company: "", status: "New" });
       fetchLeads();
     } catch (err: any) {
@@ -124,7 +125,7 @@ const Leads = () => {
     if (!currentLead) return;
     try {
       const token = localStorage.getItem("auth-token");
-      const res = await fetch(`/api/leads/${currentLead._id}`, {
+      const res = await fetch(getApiUrl(`/api/leads/${currentLead._id}`), {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -134,7 +135,7 @@ const Leads = () => {
       });
       if (!res.ok) throw new Error("Failed to update lead");
       toast.success("Lead updated successfully!");
-      setIsEditDialogOpen(false);
+    setIsEditDialogOpen(false);
       fetchLeads();
     } catch (err: any) {
       toast.error(err.message || "Failed to update lead");
@@ -150,7 +151,7 @@ const Leads = () => {
     if (!currentLead) return;
     try {
       const token = localStorage.getItem("auth-token");
-      const res = await fetch(`/api/leads/${currentLead._id}`, {
+      const res = await fetch(getApiUrl(`/api/leads/${currentLead._id}`), {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -158,7 +159,7 @@ const Leads = () => {
       });
       if (!res.ok) throw new Error("Failed to delete lead");
       toast.success("Lead deleted successfully!");
-      setIsDeleteDialogOpen(false);
+    setIsDeleteDialogOpen(false);
       fetchLeads();
     } catch (err: any) {
       toast.error(err.message || "Failed to delete lead");
@@ -187,66 +188,66 @@ const Leads = () => {
           ) : error ? (
             <div className="text-center text-red-500 py-8">{error}</div>
           ) : (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Company</TableHead>
-                  <TableHead>Email</TableHead>
-                  <TableHead>Phone</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Date Added</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {leads.map((lead) => (
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Name</TableHead>
+                <TableHead>Company</TableHead>
+                <TableHead>Email</TableHead>
+                <TableHead>Phone</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead>Date Added</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {leads.map((lead) => (
                   <TableRow key={lead._id}>
-                    <TableCell className="font-medium">{lead.name}</TableCell>
-                    <TableCell>{lead.company}</TableCell>
-                    <TableCell>{lead.email}</TableCell>
-                    <TableCell>{lead.phone}</TableCell>
-                    <TableCell>
-                      <span
-                        className={`px-2 py-1 rounded-full text-xs font-medium ${
-                          lead.status === "New"
-                            ? "bg-blue-100 text-blue-800"
-                            : lead.status === "Contacted"
-                            ? "bg-yellow-100 text-yellow-800"
-                            : lead.status === "Qualified"
-                            ? "bg-purple-100 text-purple-800"
+                  <TableCell className="font-medium">{lead.name}</TableCell>
+                  <TableCell>{lead.company}</TableCell>
+                  <TableCell>{lead.email}</TableCell>
+                  <TableCell>{lead.phone}</TableCell>
+                  <TableCell>
+                    <span
+                      className={`px-2 py-1 rounded-full text-xs font-medium ${
+                        lead.status === "New"
+                          ? "bg-blue-100 text-blue-800"
+                          : lead.status === "Contacted"
+                          ? "bg-yellow-100 text-yellow-800"
+                          : lead.status === "Qualified"
+                          ? "bg-purple-100 text-purple-800"
                             : lead.status === "Converted"
-                            ? "bg-green-100 text-green-800"
-                            : "bg-red-100 text-red-800"
-                        }`}
-                      >
-                        {lead.status}
-                      </span>
-                    </TableCell>
-                    <TableCell>
-                      {new Date(lead.createdAt).toLocaleDateString()}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="sm">
-                            <MoreHorizontal className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent>
-                          <DropdownMenuItem onClick={() => handleEditLead(lead)}>
-                            Edit
-                          </DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => handleDeleteLead(lead)}>
-                            Delete
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                          ? "bg-green-100 text-green-800"
+                          : "bg-red-100 text-red-800"
+                      }`}
+                    >
+                      {lead.status}
+                    </span>
+                  </TableCell>
+                  <TableCell>
+                    {new Date(lead.createdAt).toLocaleDateString()}
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" size="sm">
+                          <MoreHorizontal className="h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent>
+                        <DropdownMenuItem onClick={() => handleEditLead(lead)}>
+                          Edit
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleDeleteLead(lead)}>
+                          Delete
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
           )}
         </CardContent>
       </Card>
@@ -262,14 +263,14 @@ const Leads = () => {
           </DialogHeader>
           <form onSubmit={handleAddSubmit} className="space-y-4">
             <div>
-              <Label htmlFor="name">Name</Label>
-              <Input
-                id="name"
-                value={newLead.name}
+                <Label htmlFor="name">Name</Label>
+                <Input
+                  id="name"
+                  value={newLead.name}
                 onChange={(e) => setNewLead({ ...newLead, name: e.target.value })}
-                required
-              />
-            </div>
+                  required
+                />
+              </div>
             <div>
               <Label htmlFor="company">Company</Label>
               <Input
@@ -279,23 +280,23 @@ const Leads = () => {
               />
             </div>
             <div>
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                value={newLead.email}
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  value={newLead.email}
                 onChange={(e) => setNewLead({ ...newLead, email: e.target.value })}
-                required
-              />
-            </div>
+                  required
+                />
+              </div>
             <div>
-              <Label htmlFor="phone">Phone</Label>
-              <Input
-                id="phone"
-                value={newLead.phone}
+                <Label htmlFor="phone">Phone</Label>
+                <Input
+                  id="phone"
+                  value={newLead.phone}
                 onChange={(e) => setNewLead({ ...newLead, phone: e.target.value })}
-              />
-            </div>
+                />
+              </div>
             <div>
               <Label htmlFor="status">Status</Label>
               <select
@@ -332,16 +333,16 @@ const Leads = () => {
             className="space-y-4"
           >
             <div>
-              <Label htmlFor="edit-name">Name</Label>
-              <Input
-                id="edit-name"
-                value={currentLead?.name || ""}
-                onChange={(e) =>
+                <Label htmlFor="edit-name">Name</Label>
+                <Input
+                  id="edit-name"
+                  value={currentLead?.name || ""}
+                  onChange={(e) =>
                   setCurrentLead((prev) => prev ? { ...prev, name: e.target.value } : prev)
-                }
-                required
-              />
-            </div>
+                  }
+                  required
+                />
+              </div>
             <div>
               <Label htmlFor="edit-company">Company</Label>
               <Input
@@ -353,33 +354,33 @@ const Leads = () => {
               />
             </div>
             <div>
-              <Label htmlFor="edit-email">Email</Label>
-              <Input
-                id="edit-email"
-                type="email"
-                value={currentLead?.email || ""}
-                onChange={(e) =>
+                <Label htmlFor="edit-email">Email</Label>
+                <Input
+                  id="edit-email"
+                  type="email"
+                  value={currentLead?.email || ""}
+                  onChange={(e) =>
                   setCurrentLead((prev) => prev ? { ...prev, email: e.target.value } : prev)
-                }
-                required
-              />
-            </div>
+                  }
+                  required
+                />
+              </div>
             <div>
-              <Label htmlFor="edit-phone">Phone</Label>
-              <Input
-                id="edit-phone"
-                value={currentLead?.phone || ""}
-                onChange={(e) =>
+                <Label htmlFor="edit-phone">Phone</Label>
+                <Input
+                  id="edit-phone"
+                  value={currentLead?.phone || ""}
+                  onChange={(e) =>
                   setCurrentLead((prev) => prev ? { ...prev, phone: e.target.value } : prev)
                 }
-              />
-            </div>
+                />
+              </div>
             <div>
-              <Label htmlFor="edit-status">Status</Label>
-              <select
-                id="edit-status"
-                value={currentLead?.status || "New"}
-                onChange={(e) =>
+                <Label htmlFor="edit-status">Status</Label>
+                <select
+                  id="edit-status"
+                  value={currentLead?.status || "New"}
+                  onChange={(e) =>
                   setCurrentLead((prev) => prev ? { ...prev, status: e.target.value as Lead["status"] } : prev)
                 }
                 className="w-full border rounded px-2 py-1"
@@ -389,7 +390,7 @@ const Leads = () => {
                     {status}
                   </option>
                 ))}
-              </select>
+                </select>
             </div>
             <DialogFooter>
               <Button type="submit">Save</Button>

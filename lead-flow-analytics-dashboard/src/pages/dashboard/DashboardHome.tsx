@@ -38,12 +38,13 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { getApiUrl } from '@/lib/api';
 
 // Fetch leads and campaigns from the backend
 const fetchLeads = async () => {
   try {
     const token = localStorage.getItem('token');
-    const response = await fetch('/api/leads', {
+    const response = await fetch(getApiUrl('/api/leads'), {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -61,7 +62,7 @@ const fetchLeads = async () => {
 const fetchCampaigns = async () => {
   try {
     const token = localStorage.getItem('token');
-    const response = await fetch('/api/campaigns', {
+    const response = await fetch(getApiUrl('/api/campaigns'), {
       headers: {
         Authorization: `Bearer ${token}`,
       },
