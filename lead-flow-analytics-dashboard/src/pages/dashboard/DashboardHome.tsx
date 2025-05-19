@@ -150,7 +150,7 @@ const DashboardHome = () => {
     };
     loadData();
   }, []);
-
+  
   const COLORS = leadsBySource.map(source => source.color);
 
   const totalLeads = leads.length;
@@ -472,18 +472,18 @@ const DashboardHome = () => {
           <CardContent>
             <div className="overflow-x-auto">
               {leads && leads.length > 0 ? (
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr className="[&_th]:py-3 [&_th]:px-4 [&_th]:text-left [&_th]:font-medium [&_th]:text-gray-500 border-b">
-                      <th>Name</th>
-                      <th>Email</th>
-                      <th>Source</th>
-                      <th>Lead Score</th>
-                      <th>Status</th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody className="[&_td]:py-3 [&_td]:px-4">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="[&_th]:py-3 [&_th]:px-4 [&_th]:text-left [&_th]:font-medium [&_th]:text-gray-500 border-b">
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Source</th>
+                    <th>Lead Score</th>
+                    <th>Status</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody className="[&_td]:py-3 [&_td]:px-4">
                     {leads
                       .slice()
                       .sort((a, b) => {
@@ -496,37 +496,37 @@ const DashboardHome = () => {
                         <tr key={lead._id} className="border-b last:border-0 hover:bg-gray-50">
                           <td className="font-medium">{lead.name || '-'}</td>
                           <td>{lead.email || '-'}</td>
-                          <td>
-                            <div className="flex items-center gap-2">
-                              {getLeadSourceIcon(lead.source)}
+                      <td>
+                        <div className="flex items-center gap-2">
+                          {getLeadSourceIcon(lead.source)}
                               {lead.source || '-'}
-                            </div>
-                          </td>
-                          <td>
-                            <TooltipProvider>
-                              <Tooltip>
-                                <TooltipTrigger asChild>
-                                  <div className="flex items-center">
+                        </div>
+                      </td>
+                      <td>
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <div className="flex items-center">
                                     <span className="mr-2">{lead.score ?? 0}/100</span>
                                     <Progress value={lead.score ?? 0} className="h-1 w-24" />
-                                  </div>
-                                </TooltipTrigger>
-                                <TooltipContent>
+                              </div>
+                            </TooltipTrigger>
+                            <TooltipContent>
                                   <p className="text-xs">Lead quality score: {lead.score ?? 0}/100</p>
-                                </TooltipContent>
-                              </Tooltip>
-                            </TooltipProvider>
-                          </td>
-                          <td>{getLeadStatusBadge(lead.status)}</td>
-                          <td>
-                            <Button variant="ghost" size="sm">
-                              <ChevronDown className="h-4 w-4" />
-                            </Button>
-                          </td>
-                        </tr>
-                      ))}
-                  </tbody>
-                </table>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      </td>
+                      <td>{getLeadStatusBadge(lead.status)}</td>
+                      <td>
+                        <Button variant="ghost" size="sm">
+                          <ChevronDown className="h-4 w-4" />
+                        </Button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
               ) : (
                 <div className="text-center text-gray-500 py-8">No leads found.</div>
               )}
