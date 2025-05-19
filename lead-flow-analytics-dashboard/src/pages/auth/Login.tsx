@@ -153,13 +153,13 @@ const Login = () => {
         </CardFooter>
 
         {/* Demo credentials */}
-        <div className="text-center pb-6 px-6">
+        {/* <div className="text-center pb-6 px-6">
           <p className="text-xs text-muted-foreground mb-2">Demo Credentials</p>
           <div className="p-2 bg-slate-50 border border-slate-200 rounded-md">
             <p className="text-xs text-slate-500">Email: admin@example.com</p>
             <p className="text-xs text-slate-500">Password: password</p>
           </div>
-        </div>
+        </div> */}
       </Card>
     </div>
   );
